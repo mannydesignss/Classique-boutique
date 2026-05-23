@@ -295,26 +295,42 @@
     .upload-box {
       border: 2px dashed var(--gray-300); border-radius: 12px;
       overflow: hidden; transition: all 0.2s; position: relative;
+      min-height: 140px;
     }
     .upload-box:hover { border-color: var(--gray-400); }
     .upload-label {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      height: 140px; cursor: pointer; gap: 8px;
+      min-height: 140px; cursor: pointer; gap: 8px;
     }
     .upload-label i { font-size: 24px; color: var(--gray-400); }
     .upload-label span { font-size: 11px; color: var(--gray-500); text-align: center; padding: 0 12px; line-height: 1.5; }
     .upload-label input { display: none; }
     .upload-preview {
-      position: absolute; inset: 0;
       display: none; flex-direction: column;
+      width: 100%;
     }
-    .upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-preview img {
+      width: 100%; height: 120px; object-fit: cover;
+      display: block;
+    }
+    .img-actions {
+      display: flex; width: 100%;
+    }
+    .upload-preview .change-img {
+      flex: 1; padding: 8px 4px; background: var(--blue); color: white;
+      border: none; font-size: 11px; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; display: flex; align-items: center;
+      justify-content: center; gap: 4px; text-align: center;
+    }
     .upload-preview .remove-img {
-      position: absolute; top: 6px; right: 6px;
-      width: 24px; height: 24px; background: rgba(0,0,0,0.6); color: white;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 12px; border: none;
+      flex: 1; padding: 8px 4px; background: #374151; color: white;
+      border: none; font-size: 11px; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; display: flex; align-items: center;
+      justify-content: center; gap: 4px;
     }
+    .upload-preview .change-img:hover { background: var(--blue-dark); }
+    .upload-preview .remove-img:hover { background: #111827; }
+    .upload-box.has-image { border-style: solid; border-color: var(--blue); }
     .upload-box.has-image .upload-preview { display: flex; }
     .upload-box.has-image .upload-label { display: none; }
 
@@ -434,7 +450,6 @@
     </div>
     <div class="nav-links">
       <button class="nav-link" id="nav-dashboard" onclick="goTo('dashboard')">Dashboard</button>
-      <button class="nav-link" id="nav-submit" onclick="goTo('submit')">Submit Product</button>
     </div>
   </div>
 </nav>
@@ -528,17 +543,16 @@
       <table>
         <thead>
           <tr>
-            <th>SKU</th>
             <th>Product</th>
             <th>Category</th>
-            <th>Status</th>
+            <th>Gender</th>
             <th>Date</th>
             <th style="text-align:right;">Price</th>
           </tr>
         </thead>
         <tbody id="products-table">
           <tr>
-            <td colspan="6" style="text-align:center; padding:40px; color:var(--gray-400); font-size:14px;">
+            <td colspan="5" style="text-align:center; padding:40px; color:var(--gray-400); font-size:14px;">
               No products submitted yet. <button onclick="goTo('submit')" style="color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;font-size:14px;">Submit your first product →</button>
             </td>
           </tr>
@@ -682,10 +696,7 @@
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-front')" />
             </label>
-            <div class="upload-preview" id="preview-front">
-              <img id="img-front" src="" alt="Front" />
-              <button class="remove-img" onclick="removeImage('box-front', 'img-front')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-front"><img id="img-front" src="" alt="Front" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-front')"/></label><button class="remove-img" onclick="removeImage('box-front', 'img-front')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
         <div class="field">
@@ -696,10 +707,7 @@
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-back')" />
             </label>
-            <div class="upload-preview" id="preview-back">
-              <img id="img-back" src="" alt="Back" />
-              <button class="remove-img" onclick="removeImage('box-back', 'img-back')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-back"><img id="img-back" src="" alt="Back" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-back')"/></label><button class="remove-img" onclick="removeImage('box-back', 'img-back')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
         <div class="field">
@@ -710,24 +718,18 @@
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-fabric')" />
             </label>
-            <div class="upload-preview" id="preview-fabric">
-              <img id="img-fabric" src="" alt="Fabric" />
-              <button class="remove-img" onclick="removeImage('box-fabric', 'img-fabric')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-fabric"><img id="img-fabric" src="" alt="Fabric" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-fabric')"/></label><button class="remove-img" onclick="removeImage('box-fabric', 'img-fabric')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
         <div class="field">
-          <label>Label / Tag Close-Up <span class="req">*</span></label>
+          <label>Label / Tag Close-Up <span style="color:var(--gray-400);font-size:11px;">recommended</span></label>
           <div class="upload-box" id="box-label">
             <label class="upload-label">
               <i class="fas fa-image"></i>
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-label')" />
             </label>
-            <div class="upload-preview" id="preview-label">
-              <img id="img-label" src="" alt="Label" />
-              <button class="remove-img" onclick="removeImage('box-label', 'img-label')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-label"><img id="img-label" src="" alt="Label" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-label')"/></label><button class="remove-img" onclick="removeImage('box-label', 'img-label')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
         <div class="field">
@@ -738,10 +740,7 @@
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-flatlay')" />
             </label>
-            <div class="upload-preview" id="preview-flatlay">
-              <img id="img-flatlay" src="" alt="Flat Lay" />
-              <button class="remove-img" onclick="removeImage('box-flatlay', 'img-flatlay')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-flatlay"><img id="img-flatlay" src="" alt="Flat Lay" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-flatlay')"/></label><button class="remove-img" onclick="removeImage('box-flatlay', 'img-flatlay')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
         <div class="field">
@@ -752,10 +751,7 @@
               <span>Drag &amp; drop or click to upload</span>
               <input type="file" accept="image/*" onchange="previewImage(this, 'box-model')" />
             </label>
-            <div class="upload-preview" id="preview-model">
-              <img id="img-model" src="" alt="Model" />
-              <button class="remove-img" onclick="removeImage('box-model', 'img-model')">✕</button>
-            </div>
+            <div class="upload-preview" id="preview-model"><img id="img-model" src="" alt="Model" /><div class="img-actions"><label class="change-img"><i class="fas fa-pencil-alt"></i> Change<input type="file" accept="image/*" style="display:none" onchange="previewImage(this, 'box-model')"/></label><button class="remove-img" onclick="removeImage('box-model', 'img-model')"><i class="fas fa-trash"></i> Remove</button></div></div>
           </div>
         </div>
       </div>
@@ -817,17 +813,12 @@
       <i class="fas fa-check"></i>
     </div>
     <h1>Submission Successful!</h1>
-    <p>Your product has been submitted and will be processed for ecommerce upload.</p>
+    <p>Your product has been submitted successfully and will be processed for listing shortly.</p>
 
     <div class="sku-box">
-      <div class="sku-label">Generated SKU</div>
-      <div class="sku-display">
-        <span class="sku-value" id="success-sku">—</span>
-        <button class="copy-btn" onclick="copySKU()" title="Copy SKU">
-          <i class="fas fa-copy"></i>
-        </button>
-      </div>
-      <div class="sku-product" id="success-product-name"></div>
+      <div class="sku-label">Product Submitted</div>
+      <div style="font-size:18px;font-weight:700;color:var(--black);margin:8px 0;" id="success-product-name"></div>
+      <div style="font-size:12px;color:var(--gray-400);">Submitted on <span id="success-date"></span></div>
     </div>
 
     <div class="success-actions">
@@ -841,7 +832,7 @@
 
     <div class="success-note">
       <i class="fas fa-info-circle" style="color:var(--gray-400);font-size:13px;margin-top:2px;"></i>
-      <p>Data has been queued for Google Sheets sync. All submission details including images and timestamps will appear in your connected spreadsheet.</p>
+      <p>All product details and images have been saved. You will be notified once your product is live.</p>
     </div>
   </div>
 </div>
@@ -969,7 +960,7 @@
       }
     }
     if (n === 3) {
-      const required = ['box-front', 'box-back', 'box-fabric', 'box-label'];
+      const required = ['box-front', 'box-back', 'box-fabric'];
       const missing = required.filter(id => !document.getElementById(id).classList.contains('has-image'));
       if (missing.length > 0) {
         alert('Please upload all required images (Front, Back, Fabric Close-Up, Label).');
@@ -1019,8 +1010,11 @@
   }
 
   function removeImage(boxId, imgId) {
-    document.getElementById(boxId).classList.remove('has-image');
+    const box = document.getElementById(boxId);
+    box.classList.remove('has-image');
     document.getElementById(imgId).src = '';
+    // Reset all file inputs inside this box so they trigger again
+    box.querySelectorAll('input[type="file"]').forEach(input => input.value = '');
   }
 
   /* ─────────────────────────────────────────
@@ -1083,19 +1077,19 @@
     const sku = generateSKU(cat);
     const date = new Date().toISOString().split('T')[0];
 
-    const product = { sku, name, category: cat, gender, price, qty, sizes, date, status: 'uploaded' };
+    const product = { name, category: cat, gender, price, qty, sizes, date, status: 'uploaded' };
     products.push(product);
     localStorage.setItem('md_products', JSON.stringify(products));
 
     // Show success immediately — don't wait for sheets
-    document.getElementById('success-sku').textContent = sku;
     document.getElementById('success-product-name').textContent = name;
+    document.getElementById('success-date').textContent = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
     goTo('success');
 
     // Build full payload with images and send to Apps Script
     const payload = {
       sheetName: SHEET_NAME,
-      sku, date, name, category: cat, gender, price, qty,
+      date, name, category: cat, gender, price, qty,
       sizes, colors, material, brand, description, styling, notes,
       frontImage:   document.getElementById('img-front').src   || '',
       backImage:    document.getElementById('img-back').src    || '',
@@ -1111,7 +1105,7 @@
      GOOGLE SHEETS INTEGRATION
   ───────────────────────────────────────── */
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbye9WlmK15OkZT2PfP-KDIQVmAmDwWqklnr00jJdJlf2wMgU67-U5Y_Eu1I2auY4V8K/exec';
-  const SHEET_NAME = 'Classique boutique'; // ← Change this when onboarding a new client
+  const SHEET_NAME = 'Classique Boutique Innit'; // ← Change this when onboarding a new client
 
   async function sendToSheets(payload) {
     if (!APPS_SCRIPT_URL) return;
@@ -1165,7 +1159,7 @@
     else filtered = products.filter(p => p.status === filter);
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-400);font-size:14px;">
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--gray-400);font-size:14px;">
         ${products.length === 0
           ? `No products yet. <button onclick="goTo('submit')" style="color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;font-size:14px;">Submit your first →</button>`
           : 'No products match this filter.'}
@@ -1173,20 +1167,11 @@
       return;
     }
 
-    const badgeMap = {
-      ready: '<span class="badge ready">Ready To Upload</span>',
-      pending: '<span class="badge pending">Pending</span>',
-      uploaded: '<span class="badge uploaded">Uploaded</span>',
-      editing: '<span class="badge editing">Needs Editing</span>',
-      outofstock: '<span class="badge outofstock">Out Of Stock</span>',
-    };
-
     tbody.innerHTML = filtered.slice().reverse().map(p => `
       <tr>
-        <td><span class="sku">${p.sku}</span></td>
         <td><span class="product-name">${p.name}</span></td>
         <td><span class="category">${p.category}</span></td>
-        <td>${badgeMap[p.status] || p.status}</td>
+        <td><span class="category">${p.gender}</span></td>
         <td><span class="date">${p.date}</span></td>
         <td style="text-align:right;"><span class="price">₦${Number(p.price).toLocaleString()}</span></td>
       </tr>
